@@ -5,7 +5,7 @@ import pytesseract
 from PIL import Image
 
 # =========================
-# CONFIGURACIÓN DE PÁGINA
+# CONFIGURACIÓN
 # =========================
 st.set_page_config(
     page_title="OCR App",
@@ -14,51 +14,44 @@ st.set_page_config(
 )
 
 # =========================
-# ESTILO VISUAL
+# ESTILO NUEVO (FONDO + LETRAS)
 # =========================
 st.markdown("""
 <style>
 
-/* Fondo general animado */
+/* Fondo general oscuro elegante */
 .main {
-    background: linear-gradient(135deg, #00c6ff, #0072ff, #ff4b1f, #ff9068);
-    background-size: 400% 400%;
-    animation: gradient 10s ease infinite;
-}
-
-@keyframes gradient {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+    background: linear-gradient(135deg, #0f172a, #1e293b, #0b1220);
 }
 
 /* Título */
 h1 {
     text-align: center;
-    color: white;
-    font-size: 42px;
+    color: #00e5ff;
+    font-size: 44px;
     font-weight: 900;
-    text-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+    text-shadow: 0px 0px 15px rgba(0,229,255,0.4);
 }
 
 /* Texto general */
-p, label, span {
-    color: white !important;
+p, label, span, div {
+    color: #e2e8f0 !important;
     font-weight: 500;
 }
 
 /* Sidebar */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #141e30, #243b55);
+    background: linear-gradient(180deg, #0b1220, #111827);
 }
 
-/* Botones */
+/* Botón cámara */
 .stButton>button {
-    background: linear-gradient(90deg, #ff512f, #dd2476);
+    background: linear-gradient(90deg, #00e5ff, #7c3aed);
     color: white;
     font-weight: bold;
     border-radius: 0px;
     height: 50px;
+    border: none;
 }
 
 .stButton>button:hover {
@@ -67,18 +60,20 @@ section[data-testid="stSidebar"] {
 }
 
 /* Caja de resultado */
-div.stText {
-    background: rgba(0,0,0,0.3);
-    padding: 15px;
-    border-radius: 0px;
-    color: white;
+div.stText, .stMarkdown {
+    color: #f8fafc !important;
+}
+
+/* radio buttons */
+.stRadio label {
+    color: #cbd5e1 !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# TÍTULO
+# APP
 # =========================
 st.title("📷 Reconocimiento Óptico de Caracteres")
 
@@ -87,9 +82,6 @@ img_file_buffer = st.camera_input("Toma una Foto")
 with st.sidebar:
     filtro = st.radio("Aplicar Filtro", ('Con Filtro', 'Sin Filtro'))
 
-# =========================
-# PROCESAMIENTO
-# =========================
 if img_file_buffer is not None:
     bytes_data = img_file_buffer.getvalue()
     cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
