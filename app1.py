@@ -14,48 +14,39 @@ st.set_page_config(
 )
 
 # =========================
-# ESTILO VISUAL
+# ESTILO NUEVO (FONDO + LETRAS)
 # =========================
 st.markdown("""
 <style>
 
-/* Fondo vivo tipo neón */
+/* Fondo general oscuro elegante */
 .main {
-    background: linear-gradient(135deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
-    background-size: 400% 400%;
-    animation: gradientMove 8s ease infinite;
-}
-
-/* Animación */
-@keyframes gradientMove {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+    background: linear-gradient(135deg, #0f172a, #1e293b, #0b1220);
 }
 
 /* Título */
 h1 {
     text-align: center;
-    color: #ffffff;
+    color: #00e5ff;
     font-size: 44px;
     font-weight: 900;
-    text-shadow: 0px 0px 20px rgba(0,0,0,0.6);
+    text-shadow: 0px 0px 15px rgba(0,229,255,0.4);
 }
 
 /* Texto general */
 p, label, span, div {
-    color: #ffffff !important;
+    color: #e2e8f0 !important;
     font-weight: 500;
 }
 
 /* Sidebar */
 section[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #1a0033, #000814);
+    background: linear-gradient(180deg, #0b1220, #111827);
 }
 
-/* Botones */
+/* Botón cámara */
 .stButton>button {
-    background: linear-gradient(90deg, #ff00cc, #00ffcc);
+    background: linear-gradient(90deg, #00e5ff, #7c3aed);
     color: white;
     font-weight: bold;
     border-radius: 0px;
@@ -64,33 +55,33 @@ section[data-testid="stSidebar"] {
 }
 
 .stButton>button:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
     filter: brightness(1.2);
 }
 
-/* Resultado */
-.stMarkdown, .stText {
-    color: white !important;
+/* Caja de resultado */
+div.stText, .stMarkdown {
+    color: #f8fafc !important;
+}
+
+/* radio buttons */
+.stRadio label {
+    color: #cbd5e1 !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
 # =========================
-# TÍTULO
+# APP
 # =========================
 st.title("📷 Reconocimiento Óptico de Caracteres")
 
-# Cámara
 img_file_buffer = st.camera_input("Toma una Foto")
 
-# Sidebar
 with st.sidebar:
     filtro = st.radio("Aplicar Filtro", ('Con Filtro', 'Sin Filtro'))
 
-# =========================
-# PROCESAMIENTO DE IMAGEN
-# =========================
 if img_file_buffer is not None:
     bytes_data = img_file_buffer.getvalue()
     cv2_img = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
